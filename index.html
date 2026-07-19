@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF PRIME Like Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0a2e 50%, #0a0e27 100%);
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body {
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            background: rgba(0, 0, 0, 0.7);
+            border-bottom: 3px solid #ff4a4a;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            color: #ffcc00;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 13px;
+        }
+
+        .user-info .username {
+            color: #ffcc00;
+            font-weight: bold;
+            display: block;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: #ff4a4a;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .logout-btn:active {
+            background: #ff2222;
+        }
+
+        /* LOGIN SECTION */
+        .login-container {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff4a4a;
+            border-radius: 15px;
+            padding: 30px 20px;
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffcc00;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff4a4a;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #ff4a4a, #ffcc00);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .message.error {
+            background: rgba(255, 74, 74, 0.2);
+            color: #ff4a4a;
+            border: 1px solid #ff4a4a;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 102, 0.2);
+            color: #00ff66;
+            border: 1px solid #00ff66;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            display: none;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: rgba(255, 74, 74, 0.2);
+            border: 2px solid #ff4a4a;
+            border-radius: 20px;
+            color: #ffcc00;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(45deg, #ff4a4a, #ffcc00);
+            color: white;
+            border-color: #ffcc00;
+        }
+
+        /* CARDS */
+        .card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff4a4a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .card-content {
+            color: #ffffff;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .stat {
+            color: #00ff66;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* FORM */
+        .form-section {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff4a4a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-section h3 {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff4a4a;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group select:focus {
+            border-color: #ffcc00;
+        }
+
+        /* RESPONSE */
+        .response {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px dashed #ffcc00;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+            font-size: 13px;
+        }
+
+        .response.show {
+            display: block;
+        }
+
+        .response.success {
+            border-color: #00ff66;
+        }
+
+        .response.error {
+            border-color: #ff4a4a;
+        }
+
+        .response-title {
+            color: #00ff66;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .response.error .response-title {
+            color: #ff4a4a;
+        }
+
+        .response-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 204, 0, 0.1);
+        }
+
+        .response-row:last-child {
+            border-bottom: none;
+        }
+
+        .response-label {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        .response-value {
+            color: #ffffff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>⚡ FF PRIME LIKE PANEL ⚡</h1>
+            <div class="header-right">
+                <div class="user-info">
+                    <span class="username" id="username">Guest</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+            </div>
+        </div>
+
+        <!-- LOGIN SECTION -->
+        <div id="loginSection" class="login-container">
+            <h2>🔐 LOGIN / REGISTER</h2>
+            <div id="loginMessage"></div>
+            
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username_input" placeholder="Enter username">
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password_input" placeholder="Enter password">
+            </div>
+            
+            <button class="btn" onclick="register()">📝 CREATE ACCOUNT</button>
+            <button class="btn" onclick="login()">🔐 LOGIN</button>
+            
+            <p style="margin-top: 15px; color: #ffcc00; font-size: 12px;">
+                Lost access? Contact: <strong>t.me/@rajibmia1227</strong>
+            </p>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div id="mainContent" class="main-content">
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+                <button class="tab-btn" onclick="showTab('like')">❤️ Like Tool</button>
+                <button class="tab-btn" onclick="showTab('info')">👤 Info Tool</button>
+            </div>
+
+            <!-- DASHBOARD TAB -->
+            <div id="dashboard" class="tab-content">
+                <div class="grid">
+                    <div class="card">
+                        <h3>👤 User Info</h3>
+                        <div class="card-content">
+                            <strong>Username:</strong> <span id="dashUsername">-</span><br>
+                            <strong>Joined:</strong> <span id="dashJoined">-</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>📊 Daily Limits</h3>
+                        <div class="card-content">
+                            <strong>Likes Today:</strong><br>
+                            <div class="stat"><span id="likesToday">0</span>/1</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>📈 Statistics</h3>
+                        <div class="card-content">
+                            <strong>Total Likes:</strong><br>
+                            <div class="stat" id="totalLikes">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIKE TOOL TAB -->
+            <div id="like" class="tab-content hidden">
+                <div class="form-section">
+                    <h3>❤️ SEND LIKE</h3>
+                    <div id="likeMessage"></div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Player UID</label>
+                            <input type="text" id="likeUid" placeholder="Enter UID">
+                        </div>
+                        <div class="form-group">
+                            <label>Region</label>
+                            <select id="likeRegion">
+                                <option value="BD">Bangladesh</option>
+                                <option value="IND">India</option>
+                                <option value="ID">Indonesia</option>
+                                <option value="BR">Brazil</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="sendLike()">🚀 SEND LIKE</button>
+                    <div id="likeResponse" class="response"></div>
+                </div>
+            </div>
+
+            <!-- INFO TOOL TAB -->
+            <div id="info" class="tab-content hidden">
+                <div class="form-section">
+                    <h3>👤 GET PLAYER INFO</h3>
+                    <div id="infoMessage"></div>
+                    
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Player UID</label>
+                            <input type="text" id="infoUid" placeholder="Enter UID">
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="getInfo()">🔍 GET INFO</button>
+                    <div id="infoResponse" class="response"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Load user from localStorage
+        function loadUser() {
+            const saved = localStorage.getItem('ffPrimeUser');
+            if (saved) {
+                try {
+                    currentUser = JSON.parse(saved);
+                    showMainContent();
+                    updateDashboard();
+                } catch (e) {
+                    console.error('Error loading user:', e);
+                }
+            }
+        }
+
+        // Register
+        function register() {
+            const username = document.getElementById('username_input').value.trim();
+            const password = document.getElementById('password_input').value.trim();
+            const msg = document.getElementById('loginMessage');
+
+            if (!username || !password) {
+                msg.innerHTML = '<div class="message error">❌ Please fill all fields</div>';
+                return;
+            }
+
+            if (username.length < 3) {
+                msg.innerHTML = '<div class="message error">❌ Username must be 3+ characters</div>';
+                return;
+            }
+
+            currentUser = {
+                id: 'user_' + Date.now(),
+                username: username,
+                createdAt: new Date().toLocaleDateString(),
+                likesToday: 0,
+                totalLikes: 0
+            };
+
+            localStorage.setItem('ffPrimeUser', JSON.stringify(currentUser));
+            msg.innerHTML = '<div class="message success">✅ Account created!</div>';
+            
+            setTimeout(() => {
+                showMainContent();
+                updateDashboard();
+            }, 500);
+        }
+
+        // Login
+        function login() {
+            const username = document.getElementById('username_input').value.trim();
+            const password = document.getElementById('password_input').value.trim();
+            const msg = document.getElementById('loginMessage');
+
+            if (!username || !password) {
+                msg.innerHTML = '<div class="message error">❌ Please fill all fields</div>';
+                return;
+            }
+
+            currentUser = {
+                id: 'user_' + Date.now(),
+                username: username,
+                createdAt: new Date().toLocaleDateString(),
+                likesToday: 0,
+                totalLikes: 0
+            };
+
+            localStorage.setItem('ffPrimeUser', JSON.stringify(currentUser));
+            msg.innerHTML = '<div class="message success">✅ Logged in!</div>';
+            
+            setTimeout(() => {
+                showMainContent();
+                updateDashboard();
+            }, 500);
+        }
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('ffPrimeUser');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('mainContent').classList.remove('active');
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('username_input').value = '';
+            document.getElementById('password_input').value = '';
+        }
+
+        // Show main content
+        function showMainContent() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('mainContent').classList.add('active');
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('username').textContent = currentUser.username;
+        }
+
+        // Show tab
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            if (!currentUser) return;
+            document.getElementById('dashUsername').textContent = currentUser.username;
+            document.getElementById('dashJoined').textContent = currentUser.createdAt;
+            document.getElementById('likesToday').textContent = currentUser.likesToday || 0;
+            document.getElementById('totalLikes').textContent = currentUser.totalLikes || 0;
+        }
+
+        // Send like
+        function sendLike() {
+            const uid = document.getElementById('likeUid').value.trim();
+            const region = document.getElementById('likeRegion').value;
+            const msg = document.getElementById('likeMessage');
+
+            if (!uid) {
+                msg.innerHTML = '<div class="message error">❌ Enter player UID</div>';
+                return;
+            }
+
+            if ((currentUser.likesToday || 0) >= 1) {
+                msg.innerHTML = '<div class="message error">❌ Daily limit reached!</div>';
+                return;
+            }
+
+            const response = {
+                nickname: 'Player_' + Math.floor(Math.random() * 10000),
+                likes: Math.floor(Math.random() * 50) + 1
+            };
+
+            currentUser.likesToday = (currentUser.likesToday || 0) + 1;
+            currentUser.totalLikes = (currentUser.totalLikes || 0) + 1;
+            localStorage.setItem('ffPrimeUser', JSON.stringify(currentUser));
+
+            const respDiv = document.getElementById('likeResponse');
+            respDiv.classList.remove('error');
+            respDiv.classList.add('success', 'show');
+            respDiv.innerHTML = `
+                <div class="response-title">✅ LIKE SENT!</div>
+                <div class="response-row">
+                    <span class="response-label">Player:</span>
+                    <span class="response-value">${response.nickname}</span>
+                </div>
+                <div class="response-row">
+                    <span class="response-label">Likes Added:</span>
+                    <span class="response-value" style="color:#00ff66;">+${response.likes}</span>
+                </div>
+            `;
+
+            document.getElementById('likeUid').value = '';
+            updateDashboard();
+        }
+
+        // Get info
+        function getInfo() {
+            const uid = document.getElementById('infoUid').value.trim();
+            const msg = document.getElementById('infoMessage');
+
+            if (!uid) {
+                msg.innerHTML = '<div class="message error">❌ Enter player UID</div>';
+                return;
+            }
+
+            const response = {
+                nickname: 'Player_' + Math.floor(Math.random() * 10000),
+                level: Math.floor(Math.random() * 100) + 1,
+                rank: Math.floor(Math.random() * 500) + 1,
+                likes: Math.floor(Math.random() * 10000)
+            };
+
+            const respDiv = document.getElementById('infoResponse');
+            respDiv.classList.remove('error');
+            respDiv.classList.add('success', 'show');
+            respDiv.innerHTML = `
+                <div class="response-title">✅ PLAYER FOUND</div>
+                <div class="response-row">
+                    <span class="response-label">Nickname:</span>
+                    <span class="response-value">${response.nickname}</span>
+                </div>
+                <div class="response-row">
+                    <span class="response-label">Level:</span>
+                    <span class="response-value">${response.level}</span>
+                </div>
+                <div class="response-row">
+                    <span class="response-label">Rank:</span>
+                    <span class="response-value">#${response.rank}</span>
+                </div>
+                <div class="response-row">
+                    <span class="response-label">Likes:</span>
+                    <span class="response-value" style="color:#ff4a4a;">❤️ ${response.likes}</span>
+                </div>
+            `;
+
+            document.getElementById('infoUid').value = '';
+        }
+
+        // Initialize
+        loadUser();
+    </script>
+</body>
+</html>
