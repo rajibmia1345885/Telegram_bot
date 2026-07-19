@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF PRIME x RAJIB LIKE PANEL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #090310;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .panel-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid #ff4a4a;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 430px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(255, 74, 74, 0.15);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #ffcc00;
+            font-size: 22px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: #ffcc00;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-group select, .input-group input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 74, 74, 0.4);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group select:focus, .input-group input:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff4a4a, #ffcc00);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 74, 74, 0.3);
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
+        }
+
+        .loading-text {
+            color: #ffcc00;
+            font-size: 14px;
+            margin-top: 20px;
+            display: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .bot-response-card {
+            margin-top: 25px;
+            background: rgba(13, 5, 22, 0.95);
+            border: 1px dashed #ffcc00;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            display: none;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);
+        }
+
+        .bot-header {
+            color: #00ff66;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .bot-header.failed {
+            color: #ff4a4a;
+        }
+
+        .divider {
+            color: #555;
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .bot-row {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .bot-row .label-text {
+            color: #ffcc00;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        .bot-row .val-text {
+            color: #ffffff;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="panel-container">
+        <div class="header">
+            <h1>⚡ FF PRIME x RAJIB LIKE PANEL ⚡</h1>
+        </div>
+
+        <div class="input-group">
+            <label for="region">SELECT REGION</label>
+            <select id="region">
+                <option value="BD">Bangladesh (BD)</option>
+                <option value="IND">India (IND)</option>
+                <option value="ID">Indonesia (ID)</option>
+                <option value="BR">Brazil (BR)</option>
+                <option value="NA">North America (NA)</option>
+                <option value="TW">Taiwan (TW)</option>
+                <option value="TH">Thailand (TH)</option>
+                <option value="ME">Middle East (ME)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="uid">PLAYER UID</label>
+            <input type="number" id="uid" placeholder="Enter Game UID">
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="runLikeCmd()">🚀 RUN LIKE CMD</button>
+
+        <div class="loading-text" id="loading-text">🔄 Connecting to Free Fire Server... Processing...</div>
+
+        <div class="bot-response-card" id="bot-response-card"></div>
+    </div>
+
+    <script>
+        // API Configuration (Bot এপিআই এর সাথে মিল রেখে - CORRECTED URLs)
+        const API_CONFIG = {
+            BD: "https://free-fire-bd-like-api-rajib.vercel.app/like", 
+            IND: "https://free-fire-ind-like.vercel.app/like",
+            GLOBAL: "https://free-fire-ind-like.vercel.app/like"
+        };
+
+        // CORS Proxy options - browser theke direct API call korle CORS block kore
+        // tai proxy use korte hobe
+        const CORS_PROXIES = [
+            "https://api.allorigins.win/raw?url=",
+            "https://corsproxy.io/?",
+            "https://api.codetabs.com/v1/proxy?quest="
+        ];
+
+        async function fetchWithProxy(url) {
+            // First try direct fetch
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (e) {
+                console.log("Direct fetch failed, trying proxies...");
+            }
+
+            // Try each CORS proxy
+            for (let proxy of CORS_PROXIES) {
+                try {
+                    const proxyUrl = proxy + encodeURIComponent(url);
+                    const response = await fetch(proxyUrl);
+                    if (response.ok) {
+                        const text = await response.text();
+                        try {
+                            return JSON.parse(text);
+                        } catch {
+                            continue;
+                        }
+                    }
+                } catch (e) {
+                    console.log(`Proxy ${proxy} failed, trying next...`);
+                    continue;
+                }
+            }
+
+            throw new Error("All connection methods failed");
+        }
+
+        async function runLikeCmd() {
+            const region = document.getElementById('region').value;
+            const uid = document.getElementById('uid').value;
+            const loadingText = document.getElementById('loading-text');
+            const responseCard = document.getElementById('bot-response-card');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if(!uid) {
+                alert('Please enter a valid Player UID!');
+                return;
+            }
+
+            responseCard.style.display = "none";
+            loadingText.style.display = "block";
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.6";
+
+            // সঠিক API লিঙ্ক নির্বাচন
+            let selectedApiUrl = API_CONFIG[region] || API_CONFIG.GLOBAL;
+            let fullUrl = `${selectedApiUrl}?uid=${uid}&server_name=${region}`;
+
+            try {
+                // API কল with CORS proxy fallback
+                const data = await fetchWithProxy(fullUrl);
+                
+                loadingText.style.display = "none";
+                
+                if (data.status === 1 || data.PlayerNickname) {
+                    renderBotStyle(data, uid, region, true);
+                } else {
+                    renderBotStyle(data, uid, region, false);
+                }
+            } catch (error) {
+                loadingText.style.display = "none";
+                alert("API Connection Failed! Please try again.\n\nPossible reasons:\n1. API server is down\n2. Network issue\n\nPlease try again after some time.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+            }
+        }
+
+        function renderBotStyle(data, inputUid, selectedRegion, isSuccess) {
+            const responseCard = document.getElementById('bot-response-card');
+            responseCard.style.display = "block";
+            
+            if (isSuccess) {
+                const likesGiven = data.LikesGivenByAPI || '0';
+                const playerName = data.PlayerNickname || 'N/A';
+                const playerUid = data.UID || inputUid;
+                const playerRegion = data.Region || selectedRegion;
+                const beforeLikes = data.LikesbeforeCommand || '0';
+                const afterLikes = data.LikesafterCommand || '0';
+
+                responseCard.innerHTML = `
+                    <div class="bot-header">✅ LIKE SENT SUCCESSFULLY! ✅</div>
+                    <div class="divider">───────────────────</div>
+                    
+                    <div class="bot-row">👤 <span class="label-text">Name:</span> <span class="val-text" style="color:#00ff66;">${playerName}</span></div>
+                    <div class="bot-row">🆔 <span class="label-text">UID:</span> <span class="val-text">${playerUid}</span></div>
+                    <div class="bot-row">🌍 <span class="label-text">Region:</span> <span class="val-text">${playerRegion}</span></div>
+                    <div class="bot-row">❤️ <span class="label-text">Likes Added:</span> <span class="val-text" style="color:#00ff66;">+${likesGiven}</span></div>
+                    <div class="bot-row">📊 <span class="label-text">Total Likes:</span> <span class="val-text" style="color:#ffcc00;">${beforeLikes} → ${afterLikes}</span></div>
+                    
+                    <div class="divider">───────────────────</div>
+                `;
+            } else {
+                const errorMsg = data.message || "Maximum likes reached for today or Invalid UID.";
+                responseCard.innerHTML = `
+                    <div class="bot-header failed">❌ REQUEST FAILED ❌</div>
+                    <div class="divider">───────────────────</div>
+                    <div class="bot-row" style="text-align:center; display:block; color:#ff4a4a;">${errorMsg}</div>
+                    <div class="divider">───────────────────</div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
